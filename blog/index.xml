@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>My New Hugo Site</title>
-    <link>http://ironroot.zone/</link>
-    <description>Recent content on My New Hugo Site</description>
+    <title>Blogs on My New Hugo Site</title>
+    <link>http://ironroot.zone/blog/</link>
+    <description>Recent content in Blogs on My New Hugo Site</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 31 Mar 2021 01:05:20 +0800</lastBuildDate><atom:link href="http://ironroot.zone/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 31 Mar 2021 01:05:20 +0800</lastBuildDate><atom:link href="http://ironroot.zone/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>React 基础组件和类组件</title>
       <link>http://ironroot.zone/blog/post/first/</link>
@@ -33,15 +33,6 @@ React 16.8 之前如果需要在组件中使用 state
 Observable 一个序列，里面的元素会随着时间推送
  在未被订阅之前不会送出元素 可被订阅 具有多种operators  var mouseOver = Observable.fromEvent(DOM, &#39;mouseover&#39;); var subscription = mouseMove.subscribe((x) =&amp;gt; console.log(x); subscription.unsubscribe() 建立 Observable 的一些API：
  单值：of, empty, never 多值：from 定时：interval, timer 从事件创建：fromEvent 从 Promise 创建：fromPromise 自定义创建：create  Observable.of(1,2,3) Observable.from([2,3,4]) Observable.from(fetch(&#39;url&#39;)) Observable.ajax(&#39;url&#39;) Observable.fromEvent(DOM, &#39;click&#39;) Observable.interval(1000) // example var sub = Observable.from([1,2,3]) .map(x =&amp;gt; x+1) .filter(x =&amp;gt; x%2===0) .</description>
-    </item>
-    
-    <item>
-      <title>关于我</title>
-      <link>http://ironroot.zone/about/</link>
-      <pubDate>Wed, 31 Mar 2021 00:58:18 +0800</pubDate>
-      
-      <guid>http://ironroot.zone/about/</guid>
-      <description> 名字：Iron Root 梦想：见到平行时空的 Iron Man 技能：爬树老手 工作：退伍军人改行码农 喜爱的美食：大列巴、法棍（随时准备作战） 副业：特工  </description>
     </item>
     
   </channel>
