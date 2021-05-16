@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<meta name="description" content="Simple minimalist theme">
+<meta name="keywords" content="minimalist,blog,goa,hugo,developer">
+
+<title>
+  My New Hugo Site - [译]使用 JavaScript ES2020 中所有的 7 个新特性构建 App 
+</title>
+
+<meta name="generator" content="Hugo 0.82.0" />
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400&family=Roboto+Slab:400,700&family=Roboto:300,300i,400,400i,500,500i,700,700i">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+<link rel="stylesheet" href="http://ironroot.zone/css/main.css">
+<link rel="stylesheet" href="http://ironroot.zone/css/custom.css">
+
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#ffffff">
+
+</head>
+<body lang="en-us">
+<div class="container">
+
+
+<header class="text-left title">
+  <h1 class="title">[译]使用 JavaScript ES2020 中所有的 7 个新特性构建 App</h1>
+</header>
+<section id="category-pane" class="meta">
+  
+  <div class="col-md-12">
+    <h6 class="text-left meta">
+        PUBLISHED ON MAY 10, 2021 
+      
+    </h6>
+  </div>
+  
+</section>
+<section id="content-pane" class="">
+  <div class="col-md-12 text-justify content">
+    
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#javascript-es2020-中有什么新特性">JavaScript ES2020 中有什么新特性？</a></li>
+    <li><a href="#入门指南">入门指南</a></li>
+    <li><a href="#系统概述">系统概述</a></li>
+    <li><a href="#1-promiseallsettled">1. Promise.allSettled()</a></li>
+    <li><a href="#2-可选链optional-chaining">2. 可选链（Optional Chaining）</a></li>
+    <li><a href="#3-空值合并nullish-coalescing">3. 空值合并（Nullish Coalescing）</a></li>
+    <li><a href="#4-globalthis">4. globalThis</a></li>
+    <li><a href="#5-动态导入dynamic-imports">5. 动态导入（Dynamic Imports）</a></li>
+    <li><a href="#6-stringprototypematchall">6. String.prototype.matchAll()</a></li>
+    <li><a href="#7-bigint">7. BigInt</a></li>
+    <li><a href="#总结">总结</a></li>
+  </ul>
+</nav>
+    
+    <blockquote>
+<p>原文地址：<a href="https://levelup.gitconnected.com/i-built-an-app-that-uses-all-7-new-features-in-javascript-es2020-647205024984">I Built an App That Uses All 7 New Features in JavaScript ES2020</a></p>
+</blockquote>
+<blockquote>
+<p>原文作者：<a href="https://medium.com/@thawkin3">Tyler Hawkins</a></p>
+</blockquote>
+<h1 id="使用-javascript-es2020-中所有的-7-个新特性构建-app">使用 JavaScript ES2020 中所有的 7 个新特性构建 App</h1>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/15/1717de2ca1c0459d?w=1253&amp;h=711&amp;f=png&amp;s=52361" alt="Unit Price Calculator App"></p>
+<p>web 开发领域发展迅速，尤其是 JavaScript 生态系统。新的特性、框架和库层出不穷，停止学习的那一刻，即是你技术栈开始过时之时。</p>
+<p>保持 JavaScript 技能前沿性的一个重点就是掌握 JavaScript 的最新特性。因此，我认为如果能够结合 JavaScript ES2020 中的所有七个新特性来构建 app 肯定会很有趣。</p>
+<hr>
+<p>我最近去 Costco 采购了很多东西，以储备一些食品必需品。像大多数商店一样，Costco 中的价格标签用以标示每件商品的单价，这样顾客就可以比较每笔交易值不值得。如果是你，你会带着小购物袋还是大购物袋去买东西呢？（我在跟谁开玩笑呢？这是 Costco 啊，肯定带大的！）</p>
+<p>但如果不显示商品的单价呢？</p>
+<p>在本文中，我将构建一个单价计算器 app。其中，前端使用 vanilla JS，后端使用 <a href="https://nodejs.org/en/">Node.js</a> 和 <a href="https://expressjs.com/">Express.js</a>。然后在 <a href="http://heroku.com/">Heroku</a> 上部署该 app，利用 Heroku 可以很容易<a href="https://devcenter.heroku.com/articles/getting-started-with-nodejs">快速部署 node.js 应用程序</a>。</p>
+<h2 id="javascript-es2020-中有什么新特性">JavaScript ES2020 中有什么新特性？</h2>
+<p>ECMAScript 是 JavaScript 的一种语言规范。从 ES2015（ES6）开始，每年都会发布一个新版本的 JavaScript。截至目前，最新版本为 ES2020（ES11）。ES2020 包含了七个令 JS 开发人员既兴奋又期待已久的七个新特性，这些新特性包括：</p>
+<ol>
+<li>Promise.allSettled()</li>
+<li>可选链（Optional Chaining）</li>
+<li>空值合并（Nullish Coalescing</li>
+<li>globalThis</li>
+<li>动态导入（Dynamic Imports</li>
+<li>String.prototype.matchAll()</li>
+<li>BigInt</li>
+</ol>
+<p>需要注意的是并不是所有的浏览器都支持这些特性，如果想现在就开始使用这些特性，那么就要确保使用了合适的 polyfill 或者像 Babel 这样的编译器以确保代码与低版本浏览器兼容。</p>
+<h2 id="入门指南">入门指南</h2>
+<p>如果你想使用自己的代码副本，请首先创建一个 Heroku 帐户并在计算机上安装 Heroku CLI。有关安装说明可以参阅 <a href="https://devcenter.heroku.com/articles/getting-started-with-nodejs#set-up">Heroku guide</a> 指南。</p>
+<p>完成以上操作后，就可以使用 CLI 轻松创建和部署项目了。运行此示例应用程序所需的所有源代码都<a href="https://github.com/thawkin3/unit-price-calculator">可以在 GitHub 上找到</a>。</p>
+<p>以下是有关如何克隆仓库并部署到 Heroku 的分步说明：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bash" data-lang="bash">git clone https://github.com/thawkin3/unit-price-calculator.git
+cd unit-price-calculator
+heroku create
+git push heroku master
+heroku open
+</code></pre></div><h2 id="系统概述">系统概述</h2>
+<p>单价计算器 app 非常简单：用户可以比较虚拟产品的各种价格和重量选项，然后计算单价。当页面加载时，通过请求两个 API 接口从服务器获取产品数据。然后，用户就可以选择产品、首选的计量单位和价格/重量的组合了，最后点击提交按钮完成单价计算。</p>
+<p><img src="https://user-gold-cdn.xitu.io/2020/4/15/1717de2ca1c0459d?w=1253&amp;h=711&amp;f=png&amp;s=52361" alt="单价计算器 App"></p>
+<p>现在你已经看到了这个 App，让我们了解一下我是如何使用 ES2020 中所有七个新特性的。下面我们将详细讨论每个特性是什么、它的用途以及使用方式。</p>
+<h2 id="1-promiseallsettled">1. Promise.allSettled()</h2>
+<p>当用户第一次访问单价计算器 app 时，会发送三个 API 请求来向服务器获取产品数据，这时可以使用<code>Promise.allSettled()</code>等待所有三个请求完成：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fetchProductsPromise</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;/api/products&#39;</span>)
+  .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>())
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fetchPricesPromise</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;/api/prices&#39;</span>)
+  .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>())
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">fetchDescriptionsPromise</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">&#39;/api/descriptions&#39;</span>)
+  .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">response</span> =&gt; <span style="color:#a6e22e">response</span>.<span style="color:#a6e22e">json</span>())
+
+Promise.<span style="color:#a6e22e">allSettled</span>([<span style="color:#a6e22e">fetchProductsPromise</span>, <span style="color:#a6e22e">fetchPricesPromise</span>, <span style="color:#a6e22e">fetchDescriptionsPromise</span>])
+  .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">data</span> =&gt; {
+    <span style="color:#75715e">// 处理响应
+</span><span style="color:#75715e"></span>  })
+  .<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">err</span> =&gt; {
+    <span style="color:#75715e">// 处理报错
+</span><span style="color:#75715e"></span>  })
+</code></pre></div><p><code>Promise.allSettled()</code> 作为新特性之一拓展了现有的 <code>Promise.all()</code> 功能，以上两种方法都允许提供一个 promises 实例数组作为参数，并且都返回一个新的 promise 实例。</p>
+<p>区别是， 如果 promises 实例数组中有一个被 rejected，那么<code>Promise.all()</code> 就会中断请求过程，而 <code>Promise.allSettled()</code> 会等待<strong>所有</strong> promises 请求完成， 无论它们是被 resolved 或者 rejected。</p>
+<p>所以如果你想获得所有 promises 的解析结果，即使其中一些 promises 被 rejected，那么就可以使用 <code>Promise.allSettled()</code> 这个新特性。</p>
+<p>让我们看一下使用 <code>Promise.all()</code> 的另外一个例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#75715e">// promises 1-3 都 resolved
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise1</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;promise 1 resolved!&#39;</span>), <span style="color:#ae81ff">100</span>))
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise2</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;promise 2 resolved!&#39;</span>), <span style="color:#ae81ff">200</span>))
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise3</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;promise 3 resolved!&#39;</span>), <span style="color:#ae81ff">300</span>))
+
+<span style="color:#75715e">// promise 4 和 6 将会 resolved，但是 promise 5 将被 rejected
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise4</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;promise 4 resolved!&#39;</span>), <span style="color:#ae81ff">1100</span>))
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise5</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">reject</span>(<span style="color:#e6db74">&#39;promise 5 rejected!&#39;</span>), <span style="color:#ae81ff">1200</span>))
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise6</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;promise 6 resolved!&#39;</span>), <span style="color:#ae81ff">1300</span>))
+
+<span style="color:#75715e">// 没有 rejected 时 Promise.all() 的表现
+</span><span style="color:#75715e"></span>Promise.<span style="color:#a6e22e">all</span>([<span style="color:#a6e22e">promise1</span>, <span style="color:#a6e22e">promise2</span>, <span style="color:#a6e22e">promise3</span>])
+  .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">data</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;all resolved! here are the resolve values:&#39;</span>, <span style="color:#a6e22e">data</span>))
+  .<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">err</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;got rejected! reason:&#39;</span>, <span style="color:#a6e22e">err</span>))
+<span style="color:#75715e">// 所有的请求都 resolved！这是 resolve 到的值：[&#34;promise 1 resolved!&#34;, &#34;promise 2 resolved!&#34;, &#34;promise 3 resolved!&#34;]
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// 有一个 rejected 时 Promise.all() 的表现
+</span><span style="color:#75715e"></span>Promise.<span style="color:#a6e22e">all</span>([<span style="color:#a6e22e">promise4</span>, <span style="color:#a6e22e">promise5</span>, <span style="color:#a6e22e">promise6</span>])
+  .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">data</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;all resolved! here are the resolve values:&#39;</span>, <span style="color:#a6e22e">data</span>))
+  .<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">err</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;got rejected! reason:&#39;</span>, <span style="color:#a6e22e">err</span>))
+<span style="color:#75715e">// 输出：got rejected! reason: promise 5 rejected!
+</span></code></pre></div><p>以下是使用 <code>Promise.allSettled()</code> 的实例，注意当 promise 被 rejected 之后二者的区别：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#75715e">// promises 1-3 都 resolved
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise1</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;promise 1 resolved!&#39;</span>), <span style="color:#ae81ff">100</span>))
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise2</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;promise 2 resolved!&#39;</span>), <span style="color:#ae81ff">200</span>))
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise3</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;promise 3 resolved!&#39;</span>), <span style="color:#ae81ff">300</span>))
+
+<span style="color:#75715e">// promise 4 和 6 将会resolved, 但是 promise 5 将被 rejected
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise4</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;promise 4 resolved!&#39;</span>), <span style="color:#ae81ff">1100</span>))
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise5</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">reject</span>(<span style="color:#e6db74">&#39;promise 5 rejected!&#39;</span>), <span style="color:#ae81ff">1200</span>))
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">promise6</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Promise((<span style="color:#a6e22e">resolve</span>, <span style="color:#a6e22e">reject</span>) =&gt; <span style="color:#a6e22e">setTimeout</span>(() =&gt; <span style="color:#a6e22e">resolve</span>(<span style="color:#e6db74">&#39;promise 6 resolved!&#39;</span>), <span style="color:#ae81ff">1300</span>))
+
+<span style="color:#75715e">// 没有 rejected 时的 Promise.allSettled() 的表现
+</span><span style="color:#75715e"></span>Promise.<span style="color:#a6e22e">allSettled</span>([<span style="color:#a6e22e">promise1</span>, <span style="color:#a6e22e">promise2</span>, <span style="color:#a6e22e">promise3</span>])
+  .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">data</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;all settled! here are the results:&#39;</span>, <span style="color:#a6e22e">data</span>))
+  .<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">err</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;oh no, error! reason:&#39;</span>, <span style="color:#a6e22e">err</span>))
+<span style="color:#75715e">// 所有请求都完成了！这里是结果： [
+</span><span style="color:#75715e">//   { status: &#34;fulfilled&#34;, value: &#34;promise 1 resolved!&#34; },
+</span><span style="color:#75715e">//   { status: &#34;fulfilled&#34;, value: &#34;promise 2 resolved!&#34; },
+</span><span style="color:#75715e">//   { status: &#34;fulfilled&#34;, value: &#34;promise 3 resolved!&#34; },
+</span><span style="color:#75715e">// ]
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// 当有一个为 rejected 时 Promise.allSettled() 的表现
+</span><span style="color:#75715e"></span>Promise.<span style="color:#a6e22e">allSettled</span>([<span style="color:#a6e22e">promise4</span>, <span style="color:#a6e22e">promise5</span>, <span style="color:#a6e22e">promise6</span>])
+  .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">data</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;all settled! here are the results:&#39;</span>, <span style="color:#a6e22e">data</span>))
+  .<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">err</span> =&gt; <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#e6db74">&#39;oh no, error! reason:&#39;</span>, <span style="color:#a6e22e">err</span>))
+<span style="color:#75715e">// 所有请求都完成了！这里是结果： [
+</span><span style="color:#75715e">//   { status: &#34;fulfilled&#34;, value: &#34;promise 4 resolved!&#34; },
+</span><span style="color:#75715e">//   { status: &#34;rejected&#34;, reason: &#34;promise 5 rejected!&#34; },
+</span><span style="color:#75715e">//   { status: &#34;fulfilled&#34;, value: &#34;promise 6 resolved!&#34; },
+</span><span style="color:#75715e">// ]
+</span></code></pre></div><h2 id="2-可选链optional-chaining">2. 可选链（Optional Chaining）</h2>
+<p>一旦数据请求完成，我们开始处理响应。从服务器返回的数据包含一个具有深层嵌套属性的对象数组，为了安全访问这些属性，我们可以使用新发布的可选链操作符：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">data</span><span style="color:#f92672">?</span>.[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">?</span>.<span style="color:#a6e22e">status</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;fulfilled&#39;</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">data</span><span style="color:#f92672">?</span>.[<span style="color:#ae81ff">1</span>]<span style="color:#f92672">?</span>.<span style="color:#a6e22e">status</span> <span style="color:#f92672">===</span> <span style="color:#e6db74">&#39;fulfilled&#39;</span>) {
+  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">products</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">0</span>].<span style="color:#a6e22e">value</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">products</span>
+  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">prices</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">1</span>].<span style="color:#a6e22e">value</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">prices</span>
+  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">descriptions</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">data</span>[<span style="color:#ae81ff">2</span>].<span style="color:#a6e22e">value</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">descriptions</span>
+  <span style="color:#a6e22e">populateProductDropdown</span>(<span style="color:#a6e22e">products</span>, <span style="color:#a6e22e">descriptions</span>)
+  <span style="color:#a6e22e">saveDataToAppState</span>(<span style="color:#a6e22e">products</span>, <span style="color:#a6e22e">prices</span>, <span style="color:#a6e22e">descriptions</span>)
+  <span style="color:#66d9ef">return</span>
+}
+</code></pre></div><p>可选链是在 ES2020 中最让我激动的特性，可选链操作符 <code>?.</code> 支持安全地访问对象的深层嵌套属性，而无需检查每个属性是否存在。</p>
+<p>例如，在 ES2020 之前，为了访问 <code>user</code> 对象的 <code>street</code> 属性，可能需要写下面这样的代码：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">user</span> <span style="color:#f92672">=</span> {
+  <span style="color:#a6e22e">firstName</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;John&#39;</span>,
+  <span style="color:#a6e22e">lastName</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Doe&#39;</span>,
+  <span style="color:#a6e22e">address</span><span style="color:#f92672">:</span> {
+    <span style="color:#a6e22e">street</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;123 Anywhere Lane&#39;</span>,
+    <span style="color:#a6e22e">city</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Some Town&#39;</span>,
+    <span style="color:#a6e22e">state</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;NY&#39;</span>,
+    <span style="color:#a6e22e">zip</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">12345</span>,
+  },
+}
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">street</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">user</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">address</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">address</span>.<span style="color:#a6e22e">street</span>
+<span style="color:#75715e">// &#39;123 Anywhere Lane&#39;
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">badProp</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">user</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">fakeProp</span> <span style="color:#f92672">&amp;&amp;</span> <span style="color:#a6e22e">user</span>.<span style="color:#a6e22e">fakePropChild</span>
+<span style="color:#75715e">// undefined
+</span></code></pre></div><p>为了安全地访问 <code>street</code> 属性，必须首先确保 <code>user</code> 对象和 <code>address</code> 属性的存在，然后才能尝试去访问 <code>street</code> 属性。</p>
+<p>借助可选链，访问嵌套属性的代码简洁了许多：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">user</span> <span style="color:#f92672">=</span> {
+  <span style="color:#a6e22e">firstName</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;John&#39;</span>,
+  <span style="color:#a6e22e">lastName</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Doe&#39;</span>,
+  <span style="color:#a6e22e">address</span><span style="color:#f92672">:</span> {
+    <span style="color:#a6e22e">street</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;123 Anywhere Lane&#39;</span>,
+    <span style="color:#a6e22e">city</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;Some Town&#39;</span>,
+    <span style="color:#a6e22e">state</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;NY&#39;</span>,
+    <span style="color:#a6e22e">zip</span><span style="color:#f92672">:</span> <span style="color:#ae81ff">12345</span>,
+  },
+}
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">street</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">user</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">address</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">street</span>
+<span style="color:#75715e">// &#39;123 Anywhere Lane&#39;
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">badProp</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">user</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">fakeProp</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">fakePropChild</span>
+<span style="color:#75715e">// undefined
+</span></code></pre></div><p>如果在可选链上的值都不存在，则会返回 <code>undefined</code>。否则，返回访问的属性值。</p>
+<h2 id="3-空值合并nullish-coalescing">3. 空值合并（Nullish Coalescing）</h2>
+<p>当 app 加载时，还需要获取用户对测量单位的偏好设置：千克或磅。但是首选项保存在本地存储中，对于首次访问 app 的用户来说首选项还不存在。可以利用空值合并运算符来解决是使用本地存储中的值还是使用默认值千克的问题：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#a6e22e">appState</span>.<span style="color:#a6e22e">doesPreferKilograms</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">JSON</span>.<span style="color:#a6e22e">parse</span>(<span style="color:#a6e22e">doesPreferKilograms</span> <span style="color:#f92672">??</span> <span style="color:#e6db74">&#39;true&#39;</span>)
+</code></pre></div><p>当你想要获取一个非 <code>undefined</code> 或者 <code>null</code> 的变量值时，空值合并运算符 <code>??</code> 十分方便。如果指定的变量是一个布尔值，你想要使用它的值，即使它的值为 <code>false</code> ，就需要使用 <code>??</code> 操作符来替代 <code>||</code>。</p>
+<p>例如，假设要开发某些功能设置的切换，如果用户专门为该功能设置了一个值，则需要首先考虑他们的选择，而如果用户没有指定相关值，你希望通过设置默认值来为用户帐户启用该功能。</p>
+<p>在 ES2020 发布之前，你可能需要这样写：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">useCoolFeature1</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">useCoolFeature2</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">useCoolFeature3</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">undefined</span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">useCoolFeature4</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">getUserFeaturePreference</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">featurePreference</span>) =&gt; {
+  <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">featurePreference</span> <span style="color:#f92672">||</span> <span style="color:#a6e22e">featurePreference</span> <span style="color:#f92672">===</span> <span style="color:#66d9ef">false</span>) {
+    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">featurePreference</span>
+  }
+  <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">true</span>
+}
+
+<span style="color:#a6e22e">getUserFeaturePreference</span>(<span style="color:#a6e22e">useCoolFeature1</span>) <span style="color:#75715e">// true
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">getUserFeaturePreference</span>(<span style="color:#a6e22e">useCoolFeature2</span>) <span style="color:#75715e">// false
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">getUserFeaturePreference</span>(<span style="color:#a6e22e">useCoolFeature3</span>) <span style="color:#75715e">// true
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">getUserFeaturePreference</span>(<span style="color:#a6e22e">useCoolFeature4</span>) <span style="color:#75715e">// true
+</span></code></pre></div><p>通过使用空值合并操作符，代码会变得更加简洁且易懂：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">useCoolFeature1</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">useCoolFeature2</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">useCoolFeature3</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">undefined</span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">useCoolFeature4</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span>
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">getUserFeaturePreference</span> <span style="color:#f92672">=</span> (<span style="color:#a6e22e">featurePreference</span>) =&gt; {
+  <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">featurePreference</span> <span style="color:#f92672">??</span> <span style="color:#66d9ef">true</span>
+}
+
+<span style="color:#a6e22e">getUserFeaturePreference</span>(<span style="color:#a6e22e">useCoolFeature1</span>) <span style="color:#75715e">// true
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">getUserFeaturePreference</span>(<span style="color:#a6e22e">useCoolFeature2</span>) <span style="color:#75715e">// false
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">getUserFeaturePreference</span>(<span style="color:#a6e22e">useCoolFeature3</span>) <span style="color:#75715e">// true
+</span><span style="color:#75715e"></span><span style="color:#a6e22e">getUserFeaturePreference</span>(<span style="color:#a6e22e">useCoolFeature4</span>) <span style="color:#75715e">// true
+</span></code></pre></div><h2 id="4-globalthis">4. globalThis</h2>
+<p>如上所述，使用本地存储来获取和设置用户对测量单位的偏好。对于浏览器来说，本地存储对象是 <code>window</code> 对象的一个属性，可以直接调用 <code>localStorage</code> 访问一个 Storage 对象，也可以调用 <code>window.localStorage</code>。在 ES2020 中，还可以通过 <code>globalThis</code> 对象来访问本地存储（注意：还需要使用可选链进行一些功能检测，以确保浏览器支持本地存储功能）：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">doesPreferKilograms</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">globalThis</span>.<span style="color:#a6e22e">localStorage</span><span style="color:#f92672">?</span>.<span style="color:#a6e22e">getItem</span><span style="color:#f92672">?</span>.(<span style="color:#e6db74">&#39;prefersKg&#39;</span>)
+</code></pre></div><p><code>globalThis</code> 特性非常简单，但它解决了一些你可能会踩坑的问题。简单来说，<code>globalThis</code> 包含对全局对象的引用，在浏览器中，全局对象就是 <code>window</code>，而在 Node 环境中，全局对象即字面上的 <code>global</code>。使用 <code>globalThis</code> 可以确保无论代码运行在什么环境中，始终对全局对象具有有效的引用。这样你就可以编写可移植的 JavaScript 模块，无论是在浏览器的主线程、 Web Worker 或 Node 环境，这些 JS 模块都可以正确运行。</p>
+<h2 id="5-动态导入dynamic-imports">5. 动态导入（Dynamic Imports）</h2>
+<p>当用户选择了产品、计量单位、重量和价格组合之后，就可以单击提交按钮来查询单价信息。当按钮被点击之后，懒加载用于计算单价的 JavaScript 模块。在浏览器开发工具中检查网络请求，可以发现在点击按钮之前不会加载第二个文件：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#66d9ef">import</span>(<span style="color:#e6db74">&#39;./calculate.js&#39;</span>)
+  .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">module</span> =&gt; {
+    <span style="color:#75715e">// 使用模块导出的方法
+</span><span style="color:#75715e"></span>  })
+  .<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">err</span> =&gt; {
+    <span style="color:#75715e">// 处理加载模块的错误或其他后续错误
+</span><span style="color:#75715e"></span>  })
+</code></pre></div><p>ES2020 发布之前，在 JavaScript 中使用 <code>import</code> 语句意味着请求父文件时导入的文件将自动包含在父文件中。</p>
+<p>像 <a href="https://webpack.js.org/">webpack</a> 这样的模块打包器使得“代码分离”的概念流行起来，即能够将 JavaScript 包拆分为多个可以按需加载的文件的功能，React 中通过 <code>React.lazy()</code> 方法实现了此功能。</p>
+<p>代码拆分对于单页应用程序（SPA）非常有用，可以在每个页面把代码分离到不同的包中，因此只需要下载当前视图所需的代码，显著加速了首屏加载时间，这样终端用户就不必提前下载整个应用程序。</p>
+<p>代码拆分对于大部分特定环境下才需使用的代码很有帮助。比如应用程序页面上有一个“导出 PDF”的按钮，PDF 文件下载功能的代码比较大，当所需页面加载时再包含这部分代码可以减少总体加载时间。但是并非每个访问此页面的用户都需要或希望导出 PDF 文件，为了提高性能，可以懒加载 PDF 下载代码，以便只有当用户单击“导出 PDF”按钮时，才下载附加的 JavaScript 包。</p>
+<p>在 ES2020 中，JavaScript 规范直接加入了动态导入！</p>
+<p>让我们看一个没有动态导入的“导出 PDF”功能的示例：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#66d9ef">import</span> { <span style="color:#a6e22e">exportPdf</span> } <span style="color:#a6e22e">from</span> <span style="color:#e6db74">&#39;./pdf-download.js&#39;</span>
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">exportPdfButton</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">querySelector</span>(<span style="color:#e6db74">&#39;.exportPdfButton&#39;</span>)
+<span style="color:#a6e22e">exportPdfButton</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;click&#39;</span>, <span style="color:#a6e22e">exportPdf</span>)
+
+<span style="color:#75715e">// 这段代码很短，但“pdf-download.js”模块是在页面加载时加载的，而不是在单击按钮时加载
+</span></code></pre></div><p>现在让我们看看如何使用动态导入懒加载大体量的 PDF 下载模块：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">exportPdfButton</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">querySelector</span>(<span style="color:#e6db74">&#39;.exportPdfButton&#39;</span>)
+
+<span style="color:#a6e22e">exportPdfButton</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#e6db74">&#39;click&#39;</span>, () =&gt; {
+  <span style="color:#66d9ef">import</span>(<span style="color:#e6db74">&#39;./pdf-download.js&#39;</span>)
+    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">module</span> =&gt; {
+      <span style="color:#75715e">// 在模块中调用一些导出的方法
+</span><span style="color:#75715e"></span>      <span style="color:#a6e22e">module</span>.<span style="color:#a6e22e">exportPdf</span>()
+    })
+    .<span style="color:#66d9ef">catch</span>(<span style="color:#a6e22e">err</span> =&gt; {
+      <span style="color:#75715e">// 模块无法加载时处理错误
+</span><span style="color:#75715e"></span>    })
+})
+
+<span style="color:#75715e">// “pdf-download.js”模块仅在用户单击“导出 PDF”按钮时导入
+</span></code></pre></div><h2 id="6-stringprototypematchall">6. String.prototype.matchAll()</h2>
+<p>调用 <code>calculateUnitPrice</code> 方法时传入产品名称和价格/重量组合参数，价格/重量组合是一个类似“$200 for 10 kg”的字符串，我们需要解析字符串得到价格、重量和度量单位。（当然有更好的方法来设计这个应用程序，以避免像上面这样解析字符串，这是为了演示下一个特性而设置的。）我们可以使用 <code>String.prototype.matchAll()</code> 来提取必要的数据：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">matchResults</span> <span style="color:#f92672">=</span> [...<span style="color:#a6e22e">weightAndPrice</span>.<span style="color:#a6e22e">matchAll</span>(<span style="color:#e6db74">/\d+|lb|kg/g</span>)]
+</code></pre></div><p>这一行代码包含了很多内容：基于正则表达式来查找字符串中的数字和字符串匹配项“lb”或“kg”。它返回一个可以拓展到数组中的迭代器，这个数组最终包括三个分别相匹配的元素（200、10 和“kg”）。</p>
+<p>这个特性可能是所有新特性中最难理解的一个，尤其是如果你对正则表达式不是很熟悉的话。 <code>String.prototype.matchAll()</code> 可以简短解释为是对 <code>String.prototype.match()</code> 和 <code>RegExp.prototype.exec()</code> 功能的改进。这个新方法允许你将字符串与正则表达式进行匹配，并返回所有匹配结果的迭代器，包括捕获组。</p>
+<p>明白以上的基本概念了吗？让我们看看另一个有助于巩固这一概念的例子：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">regexp</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/t(e)(st(\d?))/</span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">regexpWithGlobalFlag</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">/t(e)(st(\d?))/g</span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">str</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;test1test2&#39;</span>
+
+<span style="color:#75715e">// 使用 `RegExp.prototype.exec()`
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">matchFromExec</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">regexp</span>.<span style="color:#a6e22e">exec</span>(<span style="color:#a6e22e">str</span>)
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">matchFromExec</span>)
+<span style="color:#75715e">// [&#34;test1&#34;, &#34;e&#34;, &#34;st1&#34;, &#34;1&#34;, index: 0, input: &#34;test1test2&#34;, groups: undefined]
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// 对**不带**全局标志的正则表达式使用 `String.prototype.match()` 将返回捕获组
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">matchFromMatch</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">str</span>.<span style="color:#a6e22e">match</span>(<span style="color:#a6e22e">regexp</span>)
+<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">matchFromMatch</span>)
+<span style="color:#75715e">// [&#34;test1&#34;, &#34;e&#34;, &#34;st1&#34;, &#34;1&#34;, index: 0, input: &#34;test1test2&#34;, groups: undefined]
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// 对具有全局标志的正则表达式使用 `String.prototype.matchAll()` 不会返回捕获组 :(
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">matchesFromMatchWithGlobalFlag</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">str</span>.<span style="color:#a6e22e">match</span>(<span style="color:#a6e22e">regexpWithGlobalFlag</span>)
+<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">match</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">matchesFromMatchWithGlobalFlag</span>) {
+  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">match</span>)
+}
+<span style="color:#75715e">// test1
+</span><span style="color:#75715e">// test2
+</span><span style="color:#75715e"></span>
+<span style="color:#75715e">// 正确使用 `String.prototype.matchAll()` 可以返回使用全局标志时的捕获组  :)
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">matchesFromMatchAll</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">str</span>.<span style="color:#a6e22e">matchAll</span>(<span style="color:#a6e22e">regexpWithGlobalFlag</span>)
+<span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">match</span> <span style="color:#66d9ef">of</span> <span style="color:#a6e22e">matchesFromMatchAll</span>) {
+  <span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">match</span>)
+}
+<span style="color:#75715e">// [&#34;test1&#34;, &#34;e&#34;, &#34;st1&#34;, &#34;1&#34;, index: 0, input: &#34;test1test2&#34;, groups: undefined]
+</span><span style="color:#75715e">// [&#34;test2&#34;, &#34;e&#34;, &#34;st2&#34;, &#34;2&#34;, index: 5, input: &#34;test1test2&#34;, groups: undefined]
+</span><span style="color:#75715e"></span>
+</code></pre></div><h2 id="7-bigint">7. BigInt</h2>
+<p>最后，当使用普通数字时，可以简单地用重量除以价格来计算单价。但是当需要使用大数时，ES2020 引入了 <code>BigInt</code> 以在不损失精度的情况下对大整数进行计算。在我们的应用程序中，使用 <code>BigInt</code> 比较过犹不及，但是谁知道会不会出现 API 接口改变的情况，包括一些疯狂的批量交易呢！</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">price</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">BigInt</span>(<span style="color:#a6e22e">matchResults</span>[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>])
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">priceInPennies</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">BigInt</span>(<span style="color:#a6e22e">matchResults</span>[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>] <span style="color:#f92672">*</span> <span style="color:#ae81ff">100</span>)
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">weight</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">BigInt</span>(<span style="color:#a6e22e">matchResults</span>[<span style="color:#ae81ff">1</span>][<span style="color:#ae81ff">0</span>])
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">unit</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">matchResults</span>[<span style="color:#ae81ff">2</span>][<span style="color:#ae81ff">0</span>]
+
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">unitPriceInPennies</span> <span style="color:#f92672">=</span> Number(<span style="color:#a6e22e">priceInPennies</span> <span style="color:#f92672">/</span> <span style="color:#a6e22e">weight</span>)
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">unitPriceInDollars</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">unitPriceInPennies</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">100</span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">unitPriceFormatted</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">unitPriceInDollars</span>.<span style="color:#a6e22e">toFixed</span>(<span style="color:#ae81ff">2</span>)
+</code></pre></div><p>如果你曾经处理过包含大数的数据，那么就知道在执行 JavaScript 数学操作时确保数字数据的完整性是多么痛苦。在 ES2020 发布前可以安全存储的最大整数是<code>Number.MAX_SAFE_INTEGER</code>，即 2^53-1。</p>
+<p>如果试图在变量中存储大于该值的数字，则有时该数字将无法正确存储：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">biggestNumber</span> <span style="color:#f92672">=</span> Number.<span style="color:#a6e22e">MAX_SAFE_INTEGER</span> <span style="color:#75715e">// 9007199254740991
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">incorrectLargerNumber</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">biggestNumber</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">10</span>
+<span style="color:#75715e">// 应该是： 9007199254741001
+</span><span style="color:#75715e">// 实际存储为： 9007199254741000
+</span></code></pre></div><p>新的 <code>BigInt</code> 数据类型有助于解决此问题，还能够处理更大的整数。只需对整数调用 <code>BigInt()</code> 函数或者将字母 <code>n</code> 附加到整数的末尾，就可以将整数设为 <code>BigInt</code>数据类型：</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-JavaScript" data-lang="JavaScript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">biggestNumber</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">BigInt</span>(Number.<span style="color:#a6e22e">MAX_SAFE_INTEGER</span>) <span style="color:#75715e">// 9007199254740991n
+</span><span style="color:#75715e"></span>
+<span style="color:#66d9ef">const</span> <span style="color:#a6e22e">correctLargerNumber</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">biggestNumber</span> <span style="color:#f92672">+</span> <span style="color:#ae81ff">10</span><span style="color:#a6e22e">n</span>
+<span style="color:#75715e">// 应该是： 9007199254741001n
+</span><span style="color:#75715e">// 实际存储为： 9007199254741001n
+</span></code></pre></div><h2 id="总结">总结</h2>
+<p>如上所述！既然你已经了解了 ES2020 的所有新特性，那还等什么呢？马上开始写新的 JavaScript 项目吧！</p>
+<blockquote>
+<p>如果发现译文存在错误或其他需要改进的地方，欢迎到 <a href="https://github.com/xitu/gold-miner">掘金翻译计划</a> 对译文进行修改并 PR，也可获得相应奖励积分。文章开头的 <strong>本文永久链接</strong> 即为本文在 GitHub 上的 MarkDown 链接。</p>
+</blockquote>
+<hr>
+<blockquote>
+<p><a href="https://github.com/xitu/gold-miner">掘金翻译计划</a> 是一个翻译优质互联网技术文章的社区，文章来源为 <a href="https://juejin.im">掘金</a> 上的英文分享文章。内容覆盖 <a href="https://github.com/xitu/gold-miner#android">Android</a>、<a href="https://github.com/xitu/gold-miner#ios">iOS</a>、<a href="https://github.com/xitu/gold-miner#%E5%89%8D%E7%AB%AF">前端</a>、<a href="https://github.com/xitu/gold-miner#%E5%90%8E%E7%AB%AF">后端</a>、<a href="https://github.com/xitu/gold-miner#%E5%8C%BA%E5%9D%97%E9%93%BE">区块链</a>、<a href="https://github.com/xitu/gold-miner#%E4%BA%A7%E5%93%81">产品</a>、<a href="https://github.com/xitu/gold-miner#%E8%AE%BE%E8%AE%A1">设计</a>、<a href="https://github.com/xitu/gold-miner#%E4%BA%BA%E5%B7%A5%E6%99%BA%E8%83%BD">人工智能</a>等领域，想要查看更多优质译文请持续关注 <a href="https://github.com/xitu/gold-miner">掘金翻译计划</a>、<a href="http://weibo.com/juejinfanyi">官方微博</a>、<a href="https://zhuanlan.zhihu.com/juejinfanyi">知乎专栏</a>。</p>
+</blockquote>
+
+  </div>
+</section>
+<section id="tag-pane" class="meta">
+  
+  <div class="col-md-12">
+    <h6 class="text-right meta">
+      
+    </h6>
+  </div>
+  
+</section>
+
+
+
+
+
+
+
+
+<section id="menu-pane" class="menu text-center">
+  
+  
+  <span><a class="menu-item" href="http://ironroot.zone/blog/post/react%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E5%92%8C%E7%B1%BB%E7%BB%84%E4%BB%B6%E5%AF%B9%E6%AF%94/">&lt; prev | </a></span>
+  
+  
+  <span><a class="menu-item" href="/blog">blog</a></span>
+  
+  
+  <span><a class="menu-item" href="http://ironroot.zone/blog/post/angular%E5%92%8Creact%E4%BB%8E%E6%A6%82%E5%BF%B5%E5%88%B0%E4%BD%BF%E7%94%A8%E5%AF%B9%E6%AF%94/"> | next &gt;</a></span>
+  
+  
+  <h4 class="text-center"><a class="menu-item" href="http://ironroot.zone/">home</a></h4>
+</section>
+
+
+
+<footer class="text-center footer">
+  <hr />
+  
+  <h6 class="text-center copyright">© 2020. IronRoot. <a href="http://creativecommons.org/licenses/by/3.0/">Some Rights Reserved</a>.</h6>
+  
+  <h6 class="text-center powered">Powered by <a href="https://gohugo.io/">Hugo  v0.82.0</a> &amp; <a href="https://github.com/shenoybr/hugo-goa">Goa</a>.</h6>
+  
+      
+      <h6><a href="" aria-label="RSS Feed"><i class="fas fa-rss" aria-hidden="true"></i></a></h6>
+    
+  
+</footer>
+
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+
+<script type="text/javascript">
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="js/main.js"></script>
+<script src="js/custom.js"></script>
+</body>
+</html>
+
+
