@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<meta name="description" content="Simple minimalist theme">
+<meta name="keywords" content="minimalist,blog,goa,hugo,developer">
+
+<title>
+  My New Hugo Site - React 基础组件和类组件对比 
+</title>
+
+<meta name="generator" content="Hugo 0.82.0" />
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400&family=Roboto+Slab:400,700&family=Roboto:300,300i,400,400i,500,500i,700,700i">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+<link rel="stylesheet" href="http://ironroot.zone/css/main.css">
+<link rel="stylesheet" href="http://ironroot.zone/css/custom.css">
+
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#ffffff">
+
+</head>
+<body lang="en-us">
+<div class="container">
+
+
+<header class="text-left title">
+  <h1 class="title">React 基础组件和类组件对比</h1>
+</header>
+<section id="category-pane" class="meta">
+  
+  <div class="col-md-12">
+    <h6 class="text-left meta">
+        PUBLISHED ON MAR 31, 2021 
+      
+    </h6>
+  </div>
+  
+</section>
+<section id="content-pane" class="">
+  <div class="col-md-12 text-justify content">
+    
+    <h2 id="概念和用法">概念和用法</h2>
+<h3 id="函数组件">函数组件</h3>
+<p>接收 props 对象并返回一个 react 元素</p>
+<pre><code>function Welcome(props) {
+  return &lt;h1&gt;Hello, {props.name}&lt;/h1&gt;;
+}
+</code></pre><h3 id="class-组件">class 组件</h3>
+<p>继承 React.Component 并且创建 render 函数返回 react 元素</p>
+<pre><code>class Welcome extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+ 
+  render() {
+    return &lt;h1&gt;Hello, {this.props.name}&lt;/h1&gt;;
+  }
+}
+</code></pre><h2 id="区别">区别</h2>
+<h3 id="代码量">代码量</h3>
+<p>函数式组件更少</p>
+<h3 id="状态管理">状态管理</h3>
+<p>函数组件也是无状态组件，不能使用 setState()。</p>
+<p>React 16.8 之前如果需要在组件中使用 state</p>
+<ul>
+<li>创建 class 组件</li>
+<li>提升 state 至父组件中，通过 props 传递给子组件</li>
+</ul>
+<p>但是 React 16.8 更新了 Hooks 之后，可以在函数组件中使用 useState 钩子去管理 state。</p>
+<h3 id="生命周期钩子">生命周期钩子</h3>
+<p>React 16.8 之前：不能在函数组件中使用生命周期钩子，原因和不能使用state一样，所有的生命周期钩子都来自于继承的React.Component中。</p>
+<p>React 16.8 之后：可以使用useEffect钩子去使用生命周期函数。</p>
+<h3 id="性能">性能</h3>
+<p>函数组件性能比类组件好，但是在现代浏览器中，闭包和类的原始性能只有在极端场景下才会有明显的差别。</p>
+<h3 id="渲染区别">渲染区别</h3>
+<p>Ref 下这篇 <a href="https://overreacted.io/how-are-function-components-different-from-classes/">How Are Function Components Different from Classes?</a></p>
+<h2 id="总结和参考">总结和参考</h2>
+<p>按照 React 这两年的发展可以看出作者更加看重函数组件，而且 React 团队曾提及到在 React 之后的版本将会对函数组件的性能方面进行提升。</p>
+<ul>
+<li><a href="https://zh-hans.reactjs.org/docs/components-and-props.html">官方文档</a></li>
+<li><a href="react-%E5%87%BD%E6%95%B0%E7%BB%84%E4%BB%B6%E5%92%8C%E7%B1%BB%E7%BB%84%E4%BB%B6%E7%9A%84%E5%8C%BA%E5%88%AB">函数组件和类组件的区别</a></li>
+</ul>
+
+  </div>
+</section>
+<section id="tag-pane" class="meta">
+  
+  <div class="col-md-12">
+    <h6 class="text-right meta">
+      
+    </h6>
+  </div>
+  
+</section>
+
+
+
+
+
+
+
+
+<section id="menu-pane" class="menu text-center">
+  
+  
+  <span><a class="menu-item" href="http://ironroot.zone/blog/post/rxjs%E5%85%A5%E9%97%A8/">&lt; prev | </a></span>
+  
+  
+  <span><a class="menu-item" href="/blog">blog</a></span>
+  
+  
+  <span><a class="menu-item" href="http://ironroot.zone/blog/post/angular%E5%92%8Creact%E4%BB%8E%E6%A6%82%E5%BF%B5%E5%88%B0%E4%BD%BF%E7%94%A8%E5%AF%B9%E6%AF%94/"> | next &gt;</a></span>
+  
+  
+  <h4 class="text-center"><a class="menu-item" href="http://ironroot.zone/">home</a></h4>
+</section>
+
+
+
+<footer class="text-center footer">
+  <hr />
+  
+  <h6 class="text-center copyright">© 2020. IronRoot. <a href="http://creativecommons.org/licenses/by/3.0/">Some Rights Reserved</a>.</h6>
+  
+  <h6 class="text-center powered">Powered by <a href="https://gohugo.io/">Hugo  v0.82.0</a> &amp; <a href="https://github.com/shenoybr/hugo-goa">Goa</a>.</h6>
+  
+      
+      <h6><a href="" aria-label="RSS Feed"><i class="fas fa-rss" aria-hidden="true"></i></a></h6>
+    
+  
+</footer>
+
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+
+<script type="text/javascript">
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="js/main.js"></script>
+<script src="js/custom.js"></script>
+</body>
+</html>
+
+

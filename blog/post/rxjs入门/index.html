@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<meta name="description" content="Simple minimalist theme">
+<meta name="keywords" content="minimalist,blog,goa,hugo,developer">
+
+<title>
+  My New Hugo Site - RxJS 入门 
+</title>
+
+<meta name="generator" content="Hugo 0.82.0" />
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400&family=Roboto+Slab:400,700&family=Roboto:300,300i,400,400i,500,500i,700,700i">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+<link rel="stylesheet" href="http://ironroot.zone/css/main.css">
+<link rel="stylesheet" href="http://ironroot.zone/css/custom.css">
+
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#ffffff">
+
+</head>
+<body lang="en-us">
+<div class="container">
+
+
+<header class="text-left title">
+  <h1 class="title">RxJS 入门</h1>
+</header>
+<section id="category-pane" class="meta">
+  
+  <div class="col-md-12">
+    <h6 class="text-left meta">
+        PUBLISHED ON MAR 31, 2021 
+      
+    </h6>
+  </div>
+  
+</section>
+<section id="content-pane" class="">
+  <div class="col-md-12 text-justify content">
+    
+    <h2 id="什么是-rxjs">什么是 RxJS</h2>
+<p>RxJS (Reactive Extensions For JavaScript)
+RxJS即Lodash for async，一个通过observable组合各种非同步行为的library。其中，Reactive 是指响应式编程(Reactive Programming)。</p>
+<p>任何异步事件在响应式编程都是异步事件流。不仅仅是 click、hover 这种事件，任何变量、用户输入、属性、缓存、数据结构等，响应式编程把所有事物都看成是数据流。数据流是类似数组一样的序列，可以像数组一样，用 merge、map、concat 等方法操作。</p>
+<h2 id="observable">Observable</h2>
+<p>一个序列，里面的元素会随着时间推送</p>
+<ul>
+<li>在未被订阅之前不会送出元素</li>
+<li>可被订阅</li>
+<li>具有多种operators</li>
+</ul>
+<pre><code>var mouseOver = Observable.fromEvent(DOM, 'mouseover');
+var subscription = mouseMove.subscribe((x) =&gt; console.log(x);
+subscription.unsubscribe()
+</code></pre><p>建立 Observable 的一些API：</p>
+<ul>
+<li>单值：of, empty, never</li>
+<li>多值：from</li>
+<li>定时：interval, timer</li>
+<li>从事件创建：fromEvent</li>
+<li>从 Promise 创建：fromPromise</li>
+<li>自定义创建：create</li>
+</ul>
+<pre><code>Observable.of(1,2,3)
+Observable.from([2,3,4])
+Observable.from(fetch('url'))
+Observable.ajax('url')
+Observable.fromEvent(DOM, 'click')
+Observable.interval(1000)
+
+// example
+var sub = Observable.from([1,2,3])
+		.map(x =&gt; x+1)
+		.filter(x =&gt; x%2===0)
+		.subscribe({
+			next: x =&gt; console.log(x)
+			error: err =&gt; {}
+			complete: () =&gt; {}
+		})
+</code></pre><p>Observable生产过程图示：
+<img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/cdb173f3b4ea4c24911cfa3c60934f4c~tplv-k3u1fbpfcp-watermark.image" alt=""></p>
+<p>Observable就是一条生产线，生产线上的产品就是Observable的元素。第一个进行打包的机器手就类似于map操作符，它会对每个元素进行一层封装（纸盒包装），后面一个机器手对元素进行筛选，剔除掉不符合产品标准的元素，类似于filter操作符。生产线本来是静止的，启动生产线的工人就是observer这个角色。</p>
+<h2 id="operator">Operator</h2>
+<ul>
+<li>是 Observable 的方法</li>
+<li>可对元素作运算处理</li>
+<li>永远回传一个新的 Observable（有例外）</li>
+</ul>
+<h2 id="异步事件流">异步事件流</h2>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/27b00985e5c143edbddd39c76cdd460a~tplv-k3u1fbpfcp-watermark.image" alt=""></p>
+<p>上图点击事件流程：</p>
+<ol>
+<li>click 事件流</li>
+<li>事件流产生的值</li>
+<li>错误</li>
+<li>事件流结束</li>
+<li>时间轴</li>
+</ol>
+<p>涉及到的RxJS基本概念：</p>
+<p>Observable：点击事件流
+Observers：捕获值/错误/事件结束的方法
+Subscription：Observable产生的值需要通过subscription把值传给observers</p>
+<h2 id="为什么要用-rxjs">为什么要用 RxJS</h2>
+<p>一个例子：页面上有一个按钮，现在需要统计按钮点击次数</p>
+<p>普通写法：</p>
+<pre><code>var counter = 0;
+
+document.getElementById(&quot;myBtn&quot;).addEventListener(&quot;click&quot;, function () {
+    counter = counter + 1;
+});
+</code></pre><p>RxJS 写法：</p>
+<pre><code>let button = document.getElementById(&quot;myBtn&quot;);
+
+let clickStream$ = fromEvent(button, &quot;click&quot;);
+
+let counterStream$ = clickStream$.pipe(
+    map((data) =&gt; { return 1 }),
+    scan((acc, curr) =&gt; acc + curr, 0)
+);
+
+counterStream$.subscribe(data =&gt; {
+    console.log(&quot;this is the click counter: &quot; + data);
+});
+</code></pre><p>整个事件流可以描述成：</p>
+<pre><code>clickStream: ---c----c--c----c------c--&gt;
+                   map(c becomes 1) 
+               ---1----1--1----1------1--&gt;
+                   scan(+) 
+counterStream: ---1----2--3----4------5--&gt;
+</code></pre><p>点击事件可以看成是数据流（clickStream），在 clickStream 事件流基础上用方法map把每次点击事件转化成1，然后用 scan把所有的点击次数加起来，当执行 map 或者 scan 的时候都会在原来的数据流基础上生产一个新的数据流，原来的数据流不变。</p>
+<h2 id="参考">参考</h2>
+<p><a href="https://blog.jerry-hong.com/speaking/rxjs-art/">rxjs - 封装程式的艺术</a></p>
+
+  </div>
+</section>
+<section id="tag-pane" class="meta">
+  
+  <div class="col-md-12">
+    <h6 class="text-right meta">
+      
+    </h6>
+  </div>
+  
+</section>
+
+
+
+
+
+
+
+
+<section id="menu-pane" class="menu text-center">
+  
+  
+  
+  <span><a class="menu-item" href="/blog">blog</a></span>
+  
+  
+  <span><a class="menu-item" href="http://ironroot.zone/blog/post/react%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E5%92%8C%E7%B1%BB%E7%BB%84%E4%BB%B6%E5%AF%B9%E6%AF%94/"> | next &gt;</a></span>
+  
+  
+  <h4 class="text-center"><a class="menu-item" href="http://ironroot.zone/">home</a></h4>
+</section>
+
+
+
+<footer class="text-center footer">
+  <hr />
+  
+  <h6 class="text-center copyright">© 2020. IronRoot. <a href="http://creativecommons.org/licenses/by/3.0/">Some Rights Reserved</a>.</h6>
+  
+  <h6 class="text-center powered">Powered by <a href="https://gohugo.io/">Hugo  v0.82.0</a> &amp; <a href="https://github.com/shenoybr/hugo-goa">Goa</a>.</h6>
+  
+      
+      <h6><a href="" aria-label="RSS Feed"><i class="fas fa-rss" aria-hidden="true"></i></a></h6>
+    
+  
+</footer>
+
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+
+<script type="text/javascript">
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="js/main.js"></script>
+<script src="js/custom.js"></script>
+</body>
+</html>
+
+

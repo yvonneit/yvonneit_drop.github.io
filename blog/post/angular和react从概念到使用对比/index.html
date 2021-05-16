@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+<meta name="description" content="Simple minimalist theme">
+<meta name="keywords" content="minimalist,blog,goa,hugo,developer">
+
+<title>
+  My New Hugo Site - Angular 和 React 从概念到使用对比 
+</title>
+
+<meta name="generator" content="Hugo 0.82.0" />
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400&family=Roboto+Slab:400,700&family=Roboto:300,300i,400,400i,500,500i,700,700i">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+<link rel="stylesheet" href="http://ironroot.zone/css/main.css">
+<link rel="stylesheet" href="http://ironroot.zone/css/custom.css">
+
+
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+<link rel="manifest" href="/manifest.json">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="theme-color" content="#ffffff">
+
+</head>
+<body lang="en-us">
+<div class="container">
+
+
+<header class="text-left title">
+  <h1 class="title">Angular 和 React 从概念到使用对比</h1>
+</header>
+<section id="category-pane" class="meta">
+  
+  <div class="col-md-12">
+    <h6 class="text-left meta">
+        PUBLISHED ON MAY 16, 2021 
+      
+    </h6>
+  </div>
+  
+</section>
+<section id="content-pane" class="">
+  <div class="col-md-12 text-justify content">
+    
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#概念">概念</a>
+      <ul>
+        <li><a href="#框架与库">框架与库</a></li>
+        <li><a href="#数据更新">数据更新</a></li>
+        <li><a href="#数据绑定和数据流">数据绑定和数据流</a></li>
+      </ul>
+    </li>
+    <li><a href="#组件通信">组件通信</a>
+      <ul>
+        <li><a href="#父传子">父传子</a></li>
+        <li><a href="#子传父">子传父</a></li>
+        <li><a href="#非父子组件通信">非父子组件通信</a></li>
+      </ul>
+    </li>
+    <li><a href="#参考">参考</a></li>
+  </ul>
+</nav>
+    
+    <h2 id="概念">概念</h2>
+<h3 id="框架与库">框架与库</h3>
+<p><strong>Angular是一个框架，而React是一个库。</strong></p>
+<p>React 本身不允许创建Web应用程序，因为它旨在创建视图（因此在MVC中为“ V”）。 React 可以用来构建可重复使用的 UI 组件，是个提供工具的 library。</p>
+<p>Angular 是一个生态完整的框架（MV*），包含模板，数据双向绑定，路由，模块化，服务，过滤器，依赖注入等所有功能。</p>
+<h3 id="数据更新">数据更新</h3>
+<h4 id="angular">Angular</h4>
+<p>数据更新检查：</p>
+<ol>
+<li>在 Angular 中有一个 <code>Zone.js</code> 负责监听需要视图变化的事件触发</li>
+<li>每一个组件都都它自己的检测器(detector)，用于负责检查其自身模板上绑定的变量。</li>
+<li>将旧值跟新值进行比较，不相等就说明检测到变化，更新对应视图</li>
+</ol>
+<h4 id="react">React</h4>
+<p>频繁操作 DOM 会导致大量的回流和重绘，会造成网页的卡顿。所以 React 采用虚拟 DOM 实现视图更新。</p>
+<p><strong>虚拟 DOM 如何运行？</strong></p>
+<ol>
+<li>创建阶段：首先依据 JSX 和基础数据创建出来虚拟 DOM，它反映了真实的 DOM 树的结构。然后由虚拟 DOM 树创建出真实 DOM 树，真实的 DOM 树生成完后，再触发渲染流水线往屏幕输出页面。</li>
+<li>更新阶段：如果数据发生了改变，那么就需要根据新的数据创建一个新的虚拟 DOM 树；然后 React 比较两个树，找出变化的地方，并把变化的地方一次性更新到真实的 DOM 树上；最后渲染引擎更新渲染流水线，并生成新的页面。</li>
+</ol>
+<p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/65ef30e3527e4953adfa2aff64ab4cb3~tplv-k3u1fbpfcp-watermark.image" alt="image.png">
+Virtual Dom 优势在于直接频繁的操作 DOM 效率远低于操作 JavaScript 的效率，使用 JavaScript 的成本取代 DOM 执行成本。</p>
+<h3 id="数据绑定和数据流">数据绑定和数据流</h3>
+<p>单向数据绑定：Model 的更新会触发 View 的更新，而 View 的更新不会触发 Model 的更新，它们的作用是单向的。</p>
+<p>双向数据绑定：Model 的更新会触发 View 的更新，View 的更新也会触发 Model 的更新，它们的作用是相互的。</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8ef2001fee1049fba38dfeb4018329ff~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<h4 id="react-1">React</h4>
+<p>React 采用单向数据绑定</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/9ef986a9aff2453084ee2a88821fa14d~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<p>当用户访问 View 时，通过触发 Events 进行交互，而在相应 Event Handlers中，会触发对应的 Actions，而 Actions 通过调用 <code>setState</code> 方法对 View 的 State 进行更新，State 更新后会触发 View 的重新渲染。</p>
+<p>所以，在 React 中，View 层是不能直接修改 State，必须通过相应的 Actions 来进行操作。</p>
+<h4 id="angular-1">Angular</h4>
+<p>Angular 支持单向数据绑定和双向数据绑定</p>
+<p>单向数据绑定：使用<code>[x]</code>属性绑定、(x)事件绑定或插值形式<code>{{data}}</code>。
+双向数据绑定：使用<code>[(x)]</code>（香蕉船）语法，用户对 View 的更改会直接同步到 Model。</p>
+<p>但是，<strong>React 和 Angular 都只是单向数据流</strong>。虽然 Angular 有双向数据绑定，但 Angualr 父子组件之间数据传递，仍然遵循单向数据流，即父组件可以向子组件传递 <code>props</code>，但是子组件不能修改父组件传递来的 <code>props</code>，子组件只能通过事件通知父组件进行数据更改。</p>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/ba9c0145488f4ff8a14ab89fcc25c2d4~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<h2 id="组件通信">组件通信</h2>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a165a6c51a064a529dca35de8333712f~tplv-k3u1fbpfcp-watermark.image" alt="image.png"></p>
+<p>通信情况分类</p>
+<ul>
+<li>父组件向子组件通信</li>
+<li>子组件向父组件通信</li>
+<li>非父子组件通信
+<ul>
+<li>跨级组件通信</li>
+<li>没有嵌套关系组件之间的通信</li>
+</ul>
+</li>
+</ul>
+<h3 id="父传子">父传子</h3>
+<h4 id="react-2">React</h4>
+<p>父组件中通过给子组件设置属性，将数据传递给子组件，子组件通过 <code>props</code> 来接收，当父组件更改自己状态的时候，子组件接收到的属性就会发生改变。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#66d9ef">const</span> <span style="color:#a6e22e">Child</span> <span style="color:#f92672">=</span> ({ <span style="color:#a6e22e">name</span> }) =&gt; {
+    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>{<span style="color:#a6e22e">name</span>}<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+}
+
+<span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Parent</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">React</span>.<span style="color:#a6e22e">Component</span> {
+    <span style="color:#a6e22e">constructor</span>(<span style="color:#a6e22e">props</span>) {
+        <span style="color:#66d9ef">super</span>(<span style="color:#a6e22e">props</span>)
+        <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span> <span style="color:#f92672">=</span> {
+            <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;jack&#39;</span>
+        }
+    }
+    <span style="color:#a6e22e">render</span>() {
+        <span style="color:#66d9ef">return</span> (
+            <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Child</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span>{<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span>.<span style="color:#a6e22e">name</span>} <span style="color:#f92672">/&gt;</span>
+        )
+    }
+}
+</code></pre></div><h4 id="angular-2">Angular</h4>
+<p>通过 <code>@Input</code> 装饰器把数据从父组件传到子组件</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// 父组件
+</span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">Component</span>({
+  <span style="color:#a6e22e">selector</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;app-hero-parent&#39;</span>,
+  <span style="color:#a6e22e">template</span><span style="color:#f92672">:</span> <span style="color:#e6db74">`
+</span><span style="color:#e6db74">    &lt;app-hero-child *ngFor=&#34;let hero of heroes&#34;
+</span><span style="color:#e6db74">      [hero]=&#34;hero&#34;
+</span><span style="color:#e6db74">    &lt;/app-hero-child&gt;
+</span><span style="color:#e6db74">  `</span>
+})
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HeroParentComponent</span> {
+  <span style="color:#a6e22e">heroes</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">HEROES</span>;
+}
+
+<span style="color:#75715e">// 子组件
+</span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">Component</span>({
+  <span style="color:#a6e22e">selector</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;app-hero-child&#39;</span>,
+  <span style="color:#a6e22e">template</span><span style="color:#f92672">:</span> <span style="color:#e6db74">`
+</span><span style="color:#e6db74">    &lt;h3&gt;{{hero.name}} says:&lt;/h3&gt;
+</span><span style="color:#e6db74">  `</span>
+})
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HeroChildComponent</span> {
+  <span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">Input</span>() <span style="color:#a6e22e">hero</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">Hero</span>;
+}
+</code></pre></div><h3 id="子传父">子传父</h3>
+<h4 id="react-3">React</h4>
+<p>子组件通过 回调函数 向父组件传递数据。父组件将自己的某个方法作为 <code>props</code> 传递给子组件，子组件通过 <code>this.props</code> 接收到父组件的方法后调用该回调函数，就可以向父组件进行通信了。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">//子组件
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Child</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Component</span>{
+   <span style="color:#a6e22e">state</span><span style="color:#f92672">=</span>{
+     <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;admin&#34;</span>,
+     <span style="color:#a6e22e">age</span><span style="color:#f92672">:</span><span style="color:#ae81ff">18</span>
+  }
+  <span style="color:#a6e22e">childClickHandle</span><span style="color:#f92672">=</span>()=&gt;{
+    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">showInfo</span>({<span style="color:#a6e22e">address</span><span style="color:#f92672">:</span><span style="color:#e6db74">&#34;beijing&#34;</span>})
+  }
+  <span style="color:#a6e22e">render</span>(){
+    <span style="color:#66d9ef">return</span> (
+	    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
+	    	<span style="color:#75715e">//方式一：直接调用父组件的方法
+</span><span style="color:#75715e"></span>		    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">button</span> <span style="color:#a6e22e">onClick</span><span style="color:#f92672">=</span>{<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">props</span>.<span style="color:#a6e22e">showInfo</span>.<span style="color:#a6e22e">bind</span>(<span style="color:#66d9ef">this</span>,<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">state</span>)}<span style="color:#f92672">&gt;</span><span style="color:#a6e22e">按钮</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/button&gt;</span>
+		    <span style="color:#75715e">//方式二：先调用自身的方法，再调用父组件的方法
+</span><span style="color:#75715e"></span>		    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">button</span> <span style="color:#a6e22e">onClick</span><span style="color:#f92672">=</span>{<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">childClickHandle</span>}<span style="color:#f92672">&gt;</span><span style="color:#a6e22e">按钮</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/button&gt;</span>
+	    <span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+	)
+  }
+}
+
+<span style="color:#75715e">//父组件
+</span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Parent</span> <span style="color:#66d9ef">extends</span> <span style="color:#a6e22e">Component</span>{
+  <span style="color:#a6e22e">clickHandle</span>(<span style="color:#a6e22e">data</span>){
+    <span style="color:#75715e">//data为子组件中传递过来的数据
+</span><span style="color:#75715e"></span>	<span style="color:#a6e22e">console</span>.<span style="color:#a6e22e">log</span>(<span style="color:#a6e22e">data</span>);
+  }
+
+  <span style="color:#a6e22e">render</span>(){
+    <span style="color:#66d9ef">return</span> <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Child</span> <span style="color:#a6e22e">showInfo</span><span style="color:#f92672">=</span>{<span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">clickHandle</span>.<span style="color:#a6e22e">bind</span>(<span style="color:#66d9ef">this</span>)}<span style="color:#f92672">&gt;&lt;</span><span style="color:#960050;background-color:#1e0010">/Child&gt;</span>
+  }
+}
+
+<span style="color:#a6e22e">ReactDOM</span>.<span style="color:#a6e22e">render</span>(
+  <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">Parent</span><span style="color:#f92672">/&gt;</span>,
+  document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;root&#39;</span>)
+);
+</code></pre></div><h4 id="angular-3">Angular</h4>
+<p>方法一：<code>@output + EventEmitter</code></p>
+<p><code>@output</code> 这种常见的通信，本质是给子组件传入一个函数，在子组件里执行完某些方法后，再执行传入的这个回调函数将值传给父组件。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// 子组件里定义一个 EventEmitter 类型的输出属性并发送(emit)
+</span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">Output</span>() <span style="color:#66d9ef">public</span> <span style="color:#a6e22e">childEventEmitter</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">EventEmitter</span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">any</span><span style="color:#f92672">&gt;</span>();
+
+<span style="color:#a6e22e">ngOnInit</span>(){
+    <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">childEventEmitter</span>.<span style="color:#a6e22e">emit</span>(<span style="color:#e6db74">&#39;向父组件发送数据&#39;</span>);
+}
+
+<span style="color:#75715e">// 父组件中绑定这个来自子组件的 EventEmitter 输出属性并作出回应，$event为子组件传递来的数据
+</span><span style="color:#75715e"></span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">app</span><span style="color:#f92672">-</span><span style="color:#a6e22e">child</span> (<span style="color:#a6e22e">childEventEmitter</span>)<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;childEventEmitter($event)&#34;</span><span style="color:#f92672">&gt;&lt;</span><span style="color:#960050;background-color:#1e0010">/app-child&gt;</span>
+</code></pre></div><p>方法二：父组件调用 <code>@viewChild</code></p>
+<p>父组件不能使用数据绑定来读取子组件的属性或调用子组件的方法。但可以在父组件模板里，新建一个本地变量 <code>#viewChild</code> 来代表子组件，然后利用这个变量来读取子组件的属性和调用子组件的方法。</p>
+<p>这个本地变量方法是个简单便利的方法。但是它也有局限性，因为父组件-子组件的连接必须全部在父组件的模板中进行。父组件本身的代码对子组件没有访问权。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#75715e">// 父组件
+</span><span style="color:#75715e"></span><span style="color:#f92672">&lt;</span><span style="color:#a6e22e">div</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">button</span> <span style="color:#66d9ef">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34; btn btn-primary&#34;</span> (<span style="color:#a6e22e">click</span>)<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;viewChild.myName(viewChildInputName.value)&#34;</span><span style="color:#f92672">&gt;</span><span style="color:#a6e22e">局部变量传值</span><span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/button&gt;</span>
+    <span style="color:#f92672">&lt;</span><span style="color:#a6e22e">app</span><span style="color:#f92672">-</span><span style="color:#a6e22e">view</span><span style="color:#f92672">-</span><span style="color:#a6e22e">child</span><span style="color:#f92672">-</span><span style="color:#a6e22e">child</span> <span style="color:#960050;background-color:#1e0010">#</span><span style="color:#a6e22e">viewChild</span><span style="color:#f92672">&gt;&lt;</span><span style="color:#960050;background-color:#1e0010">/app-view-child-child&gt;</span>
+<span style="color:#f92672">&lt;</span><span style="color:#960050;background-color:#1e0010">/div&gt;</span>
+
+<span style="color:#75715e">// 子组件
+</span><span style="color:#75715e"></span><span style="color:#960050;background-color:#1e0010">@</span><span style="color:#a6e22e">Component</span>({
+  <span style="color:#a6e22e">selector</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;app-view-child-child&#39;</span>,
+  <span style="color:#a6e22e">templateUrl</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;./view-child-child.component.html&#39;</span>,
+  <span style="color:#a6e22e">styleUrls</span><span style="color:#f92672">:</span> [<span style="color:#e6db74">&#39;./view-child-child.component.css&#39;</span>]
+})
+<span style="color:#66d9ef">export</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">ViewChildChildComponent</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">OnInit</span> {
+  <span style="color:#a6e22e">constructor</span>() { }
+  <span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">string</span>;
+  <span style="color:#a6e22e">myName</span>(<span style="color:#a6e22e">name</span><span style="color:#f92672">:</span> <span style="color:#a6e22e">string</span>) {
+      <span style="color:#66d9ef">this</span>.<span style="color:#a6e22e">name</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">name</span> ;
+  }
+  <span style="color:#a6e22e">ngOnInit</span>() { }
+}
+</code></pre></div><h3 id="非父子组件通信">非父子组件通信</h3>
+<p>React</p>
+<ul>
+<li>Context</li>
+<li>Redux</li>
+<li>Mobx</li>
+</ul>
+<p>Angular</p>
+<ul>
+<li>Service</li>
+<li>RxJS - Subject 订阅发布模式</li>
+</ul>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://www.infoq.cn/article/3zjscesgksmfndgir7sm">https://www.infoq.cn/article/3zjscesgksmfndgir7sm</a></li>
+<li><a href="https://www.cuelogic.com/blog/what-are-the-differences-between-angular-and-react">https://www.cuelogic.com/blog/what-are-the-differences-between-angular-and-react</a></li>
+<li>虚拟 DOM 和 实际 DOM 有何不同？</li>
+</ul>
+
+  </div>
+</section>
+<section id="tag-pane" class="meta">
+  
+  <div class="col-md-12">
+    <h6 class="text-right meta">
+      
+    </h6>
+  </div>
+  
+</section>
+
+
+
+
+
+
+
+
+<section id="menu-pane" class="menu text-center">
+  
+  
+  <span><a class="menu-item" href="http://ironroot.zone/blog/post/react%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E5%92%8C%E7%B1%BB%E7%BB%84%E4%BB%B6%E5%AF%B9%E6%AF%94/">&lt; prev | </a></span>
+  
+  
+  <span><a class="menu-item" href="/blog">blog</a></span>
+  
+  
+  
+  <h4 class="text-center"><a class="menu-item" href="http://ironroot.zone/">home</a></h4>
+</section>
+
+
+
+<footer class="text-center footer">
+  <hr />
+  
+  <h6 class="text-center copyright">© 2020. IronRoot. <a href="http://creativecommons.org/licenses/by/3.0/">Some Rights Reserved</a>.</h6>
+  
+  <h6 class="text-center powered">Powered by <a href="https://gohugo.io/">Hugo  v0.82.0</a> &amp; <a href="https://github.com/shenoybr/hugo-goa">Goa</a>.</h6>
+  
+      
+      <h6><a href="" aria-label="RSS Feed"><i class="fas fa-rss" aria-hidden="true"></i></a></h6>
+    
+  
+</footer>
+
+</div>
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  
+
+<script type="text/javascript">
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script src="js/main.js"></script>
+<script src="js/custom.js"></script>
+</body>
+</html>
+
+
